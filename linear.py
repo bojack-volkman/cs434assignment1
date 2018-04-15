@@ -1,7 +1,8 @@
 import numpy
 #https://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.inv.html
 from numpy.linalg import inv #for inverse
- 
+from numpy import matrix
+
 def open_file(filename,check_dummy): #check_dummy == 1: dummy on
 	f = open(filename,'r')
 	X = []
@@ -32,18 +33,6 @@ def ASE(X,Y,w):
 	for a in range (len(Y)):
 		temp += (float((Y[a] - numpy.dot(X[a],w))))**2
 	return temp/len(Y) #this is ASE.
-
-def add_feature(rand_num):
-	
-	#while index is greater than 0
-		#some variable d = random sample from normal distribution
-		#append d to instance of X
-		#index--
-		
-		#however, I have no idea how to implement it in this version of Python
-	
-	#Working on it now
-	return
 
 file_name1 = 'housing_train.txt'
 file_name2 = 'housing_test.txt'
@@ -78,3 +67,24 @@ print(ASE(tr_X, tr_Y,w)) #prints ASE of training data
 print(ASE(ts_X, ts_Y,w)) #prints ASE of testing data
 
 #question 1.4
+
+rand_feature = 0
+temp_tr_X = tr_X
+temp_ts_X = ts_X
+
+for a in range(2,40): #choose number
+	temp1 = numpy.random.normal(0,1.0,(len(temp_tr_X))) # random normal standard distribution for training value
+	temp2 = numpy.random.normal(0,1.0,(len(temp_ts_X))) # random normal standard distribution for testing value
+	#Translates slice objects to concatenation along the second axis.
+	temp_tr_X = numpy.c_[temp_tr_X,temp1]
+	temp_ts_X = numpy.c_[temp_ts_X,temp2]
+	#print(matrix(temp_tr_X).shape)
+	if (a % 2 == 0):
+		print("d = " + str(a))
+		w = cal_weight(temp_tr_X,tr_Y)
+		print('ASE when d=' + str(a))
+		print("traning data ASE: "+ str(ASE(temp_tr_X,tr_Y,w)))
+		print("testing data ASE: "+ str(ASE(temp_ts_X,ts_Y,w)))
+#print(temp_tr_X)
+#print(matrix(temp_tr_X).shape)
+#print(matrix(temp1).shape)
