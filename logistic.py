@@ -28,7 +28,7 @@ ts_X,ts_Y  = open_file(file_name1)
 tr_X,tr_Y = open_file(file_name2)
 
 w = numpy.zeros(256)
-learning = 0.001 #Learning Rate
+learning = 0.00001 #Learning Rate
 count = 0
 #Algorithm is from our slides
 #https://oregonstate.instructure.com/courses/1674445/files/folder/lectures?preview=70749128
@@ -39,7 +39,7 @@ acc_total = 0
 delta = numpy.zeros(256)
 
 print('python is iterating now......')
-while count < 500: # number of iteration
+while count < 1000: # number of iteration
     new_delta = numpy.zeros(256)
     for i in range(0,(numpy.matrix(ts_X).shape[0])):
         y_hat = float(1) / float(1 + numpy.exp(-1*numpy.dot(numpy.transpose(w),tr_X[i])))
@@ -65,14 +65,14 @@ print('python is iterating now......')
 
 w = numpy.zeros(256)
 count = 0
-lam = float(10**(2)) # Lamda
+lam = float(10**(1)) # Lamda
 acc_pass = 0
 acc_total = 0
 
 #this is the guess
 delta = numpy.zeros(256)
 
-while count < 5000: # number of iteration
+while count < 1000: # number of iteration
     new_delta = numpy.zeros(256)
     for i in range(0,(numpy.matrix(ts_X).shape[0])):
         #y_hatl => with lamda
@@ -89,8 +89,9 @@ while count < 5000: # number of iteration
         new_delta = ((y_hatl - tr_Y[i]) * tr_X[i])
         #print(new_delta)
         delta = delta + new_delta
-	#L(w) = sum(l)
-    w = (1/2)*lam*(w**2) - (learning*delta)
+	#L(w) = sum(l) +0.5* lambda * (w^2) 
+    w = (1/2)*lam*((numpy.linalg.norm(w))**2) - (learning*delta)
+    print("Norm of w: " + str((numpy.linalg.norm(w))**2))
 	
     count = count + 1
 
