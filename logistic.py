@@ -1,7 +1,7 @@
 import csv
 import numpy
 import math
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 #print(numpy.exp(range(1,5))) #exp fucntion
 
@@ -67,7 +67,7 @@ print('python is iterating now......')
 
 w = numpy.zeros(256)
 count = 0
-lam = float(10**(6)) # Lamda
+lam = float(10**(4)) # Lamda
 acc_pass = 0
 acc_total = 0
 
