@@ -1,6 +1,7 @@
 import csv
 import numpy
 import math
+import matplotlib.pyplot as plt
 
 #print(numpy.exp(range(1,5))) #exp fucntion
 
@@ -39,7 +40,7 @@ acc_total = 0
 delta = numpy.zeros(256)
 
 print('python is iterating now......')
-while count < 1000: # number of iteration
+while count < 100: # number of iteration
     new_delta = numpy.zeros(256)
     for i in range(0,(numpy.matrix(ts_X).shape[0])):
         y_hat = float(1) / float(1 + numpy.exp(-1*numpy.dot(numpy.transpose(w),tr_X[i])))
@@ -57,6 +58,7 @@ while count < 1000: # number of iteration
         delta = delta + new_delta
     w = w - (learning*delta)
     count = count + 1
+    #plt.plot(count,float(acc_pass)/float(acc_total),'bo')
 
 print("Success percentage : " + str(float(acc_pass)/float(acc_total)))
 print("How many iteration? : " + str(count))
@@ -65,14 +67,14 @@ print('python is iterating now......')
 
 w = numpy.zeros(256)
 count = 0
-lam = float(10**(1)) # Lamda
+lam = float(10**(6)) # Lamda
 acc_pass = 0
 acc_total = 0
 
 #this is the guess
 delta = numpy.zeros(256)
 
-while count < 1000: # number of iteration
+while count < 100: # number of iteration
     new_delta = numpy.zeros(256)
     for i in range(0,(numpy.matrix(ts_X).shape[0])):
         #y_hatl => with lamda
@@ -90,10 +92,16 @@ while count < 1000: # number of iteration
         #print(new_delta)
         delta = delta + new_delta
 	#L(w) = sum(l) +0.5* lambda * (w^2) 
-    w = (1/2)*lam*((numpy.linalg.norm(w))**2) - (learning*delta)
-    print("Norm of w: " + str((numpy.linalg.norm(w))**2))
+    #print(len(new_delta))
+    #w = (1/2)*lam*((numpy.linalg.norm(w))**2) - (learning*delta)
+    w = numpy.subtract(w,numpy.multiply(learning,numpy.add(delta,numpy.multiply(lam,w))))
+    #print("Norm of w: " + str((numpy.linalg.norm(w))**2))
+    #print(len(learning*delta))
+    #print(w)
 	
     count = count + 1
+    #plt.plot(count,float(acc_pass)/float(acc_total),'go')
 
+#plt.show()
 print("Success percentage with lamda: " + str(float(acc_pass)/float(acc_total)))
-print("How many iteration? with lamda:" + str(count))
+print("How many iteration?" + str(count) + " with lamda: " + str(lam))
